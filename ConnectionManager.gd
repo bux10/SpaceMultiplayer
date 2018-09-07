@@ -5,7 +5,7 @@ var ship = null
 var players = []
 
 func _ready():
- ship = preload("res://Ship.tscn")
+ ship = preload("res://Tank.tscn")
  get_tree().connect("connected_to_server", self, "_connected_ok")
 
 func on_host_game():

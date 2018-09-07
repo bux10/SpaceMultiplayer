@@ -1,0 +1,42 @@
+BASED ON SPD/9  HP/500 DMG/50 RANGE/15 VIS/15 MAX
+FLAMETHROWER: SPD:10  HP:180 DMG:30 RANGE:3 VIS:8 SIZE:small
+	fastest? scout like, but can deal some dmg
+	Special1: can blow a fuel tank to create a smoke bomb, radius of 5, used to escape, slightly slows enemies and all shots miss except explosions? for 1.5 seconds?
+		 weakens flamethrower for 4 seconds?.  cooldown 20sec? overheat 
+	Special2: can drop burrowing sensors that detect enemies, radius of 5. when enemy drives within field pings map where sensor was placed. can carry or place 	
+		max of 3. recharge every 10 seconds
+
+MACHINEGUNNER: SPD:8 HP:240 DMG:18 RANGE:6 VIS:10 SIZE:small
+	Special1:Shield creates a shield that takes 200 dmg? cd 25seconds?
+	Special2:EMP nade? shuts down enemy firing cababilty for 1.5 sec? can carry 2, recharge at 20s?
+
+ENGINEER: (MEDIC?) SPD:6 HP:290 DMG:22 RANGE 5 VIS:6 SIZE:medium
+	Special1:heal? shoots a repair beam range of 1 that heals 25hp/sec?
+	Special2:builds turret? can build one turret that can upgrade twice, upgrade cd 30 seconds.
+				 turret stats to come, but better range, dmg each level maybe ending with rockets
+MORTAR: SPD:4.5 HP:240 DMG:38 RANGE:11 VIS:13 SIZE:medium
+	SLOW TO HIT AND RELOAD
+	Special1:
+	Special2:
+
+LASER: (SNIPER) SPD:6.5 HP:215 DMG:42 RANGE:10 VIS:10 SIZE:small
+	SLOW TO FIRE AND RELOAD
+	Special1:flare
+	Special2:stealth on stop?
+
+BEEFCAKE:SPD:3 HP:500 DMG:12 RANGE:4 VIS:10 SIZE:large
+	tankiest class, slow, high hp
+	Special1:aoe
+	Special2:one direction shield	
+
+DIGGER? SIZE:SIZE:medium
+	Special1:burrows?
+	Special2:snare trap
+
+BUILDER? SIZE:medium
+	Special1:
+	Special2:
+
+jumper SIZE:small
+	Special1:jumps
+	Special2:
