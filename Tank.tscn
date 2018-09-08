@@ -1,11 +1,17 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Tank.gd" type="Script" id=1]
 [ext_resource path="res://assets/Mortar-BodyF1.png" type="Texture" id=2]
 [ext_resource path="res://assets/Mortar-BodyF2.png" type="Texture" id=3]
 [ext_resource path="res://assets/Mortar-BodyF3.png" type="Texture" id=4]
+[ext_resource path="res://assets/onlyObjects_retina_rotated.png" type="Texture" id=5]
 
-[sub_resource type="SpriteFrames" id=1]
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 41.9291, 30.7557 )
+
+[sub_resource type="SpriteFrames" id=2]
 
 animations = [ {
 "frames": [ ExtResource( 2 ) ],
@@ -19,28 +25,43 @@ animations = [ {
 "speed": 12.0
 } ]
 
-[node name="Tank" type="KinematicBody2D" index="0"]
+[node name="Tank" type="KinematicBody2D"]
 
 input_pickable = false
 collision_layer = 1
 collision_mask = 1
 collision/safe_margin = 0.08
 script = ExtResource( 1 )
+speed = 200
+rotation_speed = 5
+max_speed = 150
+max_health = 500
+velocity = Vector2( 0, 0 )
+Bullet = null
+gun_cooldown = 0.2
 
-[node name="Body" type="AnimatedSprite" parent="." index="0"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
 
-frames = SubResource( 1 )
+shape = SubResource( 1 )
+
+[node name="Body" type="AnimatedSprite" parent="." index="1"]
+
+frames = SubResource( 2 )
 animation = "Moving"
 
-[node name="Turret" type="AnimatedSprite" parent="." index="1"]
+[node name="Turret" type="Sprite" parent="." index="2"]
 
-animation = "default"
+texture = ExtResource( 5 )
+offset = Vector2( 16, 0 )
+region_enabled = true
+region_rect = Rect2( 271, 60, 64, 28 )
+_sections_unfolded = [ "Offset", "Region", "Transform" ]
 
 [node name="Muzzle" type="Position2D" parent="Turret" index="0"]
 
 [node name="Flash" type="Sprite" parent="Turret" index="1"]
 
-[node name="Camera2D" type="Camera2D" parent="." index="2"]
+[node name="Camera2D" type="Camera2D" parent="." index="3"]
 
 anchor_mode = 1
 rotating = false
@@ -48,7 +69,7 @@ current = false
 zoom = Vector2( 1, 1 )
 limit_left = 0
 limit_top = 0
-limit_right = 1024
+limit_right = 2048
 limit_bottom = 600
 limit_smoothed = false
 drag_margin_h_enabled = true
