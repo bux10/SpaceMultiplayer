@@ -37,7 +37,6 @@ rotation_speed = 5
 max_speed = 150
 max_health = 500
 velocity = Vector2( 0, 0 )
-Bullet = null
 gun_cooldown = 0.2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]

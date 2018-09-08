@@ -9,7 +9,7 @@ export (int) var rotation_speed = 5
 export (int) var max_speed = 150
 export (float) var max_health = 500
 export (Vector2) var velocity = Vector2()
-export (PackedScene) var Bullet
+#export (PackedScene) var Bullet
 export (float) var gun_cooldown = 0.2
 
 slave var slave_position = Vector2()

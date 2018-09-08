@@ -2,7 +2,7 @@
 
 [ext_resource path="res://assets/terrain_tiles.tres" type="TileSet" id=1]
 
-[node name="Map" type="Node2D"]
+[node name="Map" type="Node2D" index="0"]
 
 [node name="Ground" type="TileMap" parent="." index="0"]
 
@@ -27,6 +27,8 @@ _sections_unfolded = [ "Cell" ]
 
 [node name="SpawnPoints" type="Node2D" parent="." index="1"]
 
+editor/display_folded = true
+
 [node name="0" type="Position2D" parent="SpawnPoints" index="0"]
 
 position = Vector2( 87.7424, 319.842 )
@@ -34,5 +36,7 @@ position = Vector2( 87.7424, 319.842 )
 [node name="1" type="Position2D" parent="SpawnPoints" index="1"]
 
 position = Vector2( 905.062, 320.923 )
+
+[node name="Players" type="Node2D" parent="." index="2"]
 
 

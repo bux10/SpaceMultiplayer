@@ -2,12 +2,12 @@ extends Node
 
 const PORT = 1234
 var ship = null
+var m = null
 var players = []
-var map
+var map = load("res://Maps/Map01.tscn").instance()
 
 func _ready():
 	ship = preload("res://Tank.tscn")
-	map = preload("res://Maps/Map01.tscn")
 	get_tree().connect("connected_to_server", self, "_connected_ok")
 
 func on_host_game():
@@ -37,18 +37,12 @@ remote func register_player(player_id):
 	p.name = str(player_id)
 	#m.set_network_master(player_id)
 	if player_id == 1:
-		var m = map.instance()
-#		var team1 = Node2D.new()
-#		get_tree().get_root().add_child(team1)
-#		get_tree().get_root().add_child(m)
-		get_tree().get_root().add_child(p)
-		print(get_tree().get_root().get_children())
+		get_tree().get_root().add_child(map)
+		map.get_node("Players").add_child(p)
+#		print(get_tree().get_root().get_children())
 	else:
-#		var team2 = Node2D.new()
-#		get_tree().get_root().add_child(team2)
-#		get_tree().get_root().get_node("team2").add_child(p)
-		get_tree().get_root().add_child(p)
-		print(get_tree().get_root().get_children())
+		map.get_node("Players").add_child(p)
+	print(get_tree().get_root().get_children())
 	# if I'm the server I inform the new connected player about the others
 	if get_tree().get_network_unique_id() == 1:
 		if player_id != 1:
