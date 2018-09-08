@@ -46,9 +46,9 @@ func explode():
 #	$Explosion.play("smoke")
 #
 func _on_Bullet_body_entered(body):
-	pass
-#	if body.is_network_master():
-#	rpc("sync_hit", body)
+	if body.is_network_master():
+		if body.has_method("take_damage"):
+			body.take_damage(damage)
 		
 #sync func sync_hit(body):
 #	if body.has_method("take_damage"):

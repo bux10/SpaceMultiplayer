@@ -26,13 +26,14 @@ animations = [ {
 "speed": 12.0
 } ]
 
-[node name="Tank" type="KinematicBody2D" index="0"]
+[node name="Tank" type="KinematicBody2D"]
 
 input_pickable = false
-collision_layer = 1
-collision_mask = 1
+collision_layer = 2
+collision_mask = 7
 collision/safe_margin = 0.08
 script = ExtResource( 1 )
+_sections_unfolded = [ "Collision" ]
 Bullet = ExtResource( 2 )
 speed = 200
 rotation_speed = 5
@@ -62,7 +63,7 @@ _sections_unfolded = [ "Offset", "Region", "Transform" ]
 
 [node name="Muzzle" type="Position2D" parent="Turret" index="0"]
 
-position = Vector2( 55, 0 )
+position = Vector2( 50, 0 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Flash" type="Sprite" parent="Turret" index="1"]

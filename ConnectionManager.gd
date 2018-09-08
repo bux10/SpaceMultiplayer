@@ -5,6 +5,7 @@ var ship = null
 var m = null
 var players = []
 var map = load("res://Maps/Map01.tscn").instance()
+var hud = load("res://ui/HUD.tscn").instance()
 
 func _ready():
 	ship = preload("res://Tank.tscn")
@@ -39,10 +40,18 @@ remote func register_player(player_id):
 	if player_id == 1:
 		get_tree().get_root().add_child(map)
 		map.get_node("Players").add_child(p)
+		map.add_child(hud)
+		hud.set_network_master(player_id)
+#		hud.get_node("Margin/Container/HealthBar").max_value = p.max_health
+#		hud.get_node("Margin/Container/HealthBar").value = p.max_health
+		p.connect("health_changed", hud, "update_healthbar")
 		p.connect("shoot", map, "_on_Tank_shoot")
 #		print(get_tree().get_root().get_children())
 	else:
 		map.get_node("Players").add_child(p)
+		map.add_child(hud)
+		hud.set_network_master(player_id)
+		p.connect("health_changed", hud, "update_healthbar")
 		p.connect("shoot", map, "_on_Tank_shoot")
 #	print(get_tree().get_root().get_children())
 	# if I'm the server I inform the new connected player about the others

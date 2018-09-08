@@ -11,5 +11,5 @@ func _on_Tank_shoot(bullet, _position, _direction, _target=null):
 	print("shoot")
 	var b = bullet.instance()
 	add_child(b)
-	b.set_network_master(1)
+#	b.set_network_master(1)
 	b.start(_position, _direction, _target)
