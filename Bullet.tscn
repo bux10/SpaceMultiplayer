@@ -21,8 +21,9 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
 }
+speed = 1000
 damage = 10
-speed = 100
+steer_force = 0
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
@@ -36,6 +37,15 @@ _sections_unfolded = [ "Offset", "Region" ]
 
 shape = SubResource( 1 )
 
+[node name="Lifetime" type="Timer" parent="." index="2"]
+
+process_mode = 1
+wait_time = 0.5
+one_shot = false
+autostart = false
+
 [connection signal="body_entered" from="." to="." method="_on_Bullet_body_entered"]
+
+[connection signal="timeout" from="Lifetime" to="." method="_on_Lifetime_timeout"]
 
 

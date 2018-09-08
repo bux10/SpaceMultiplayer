@@ -39,10 +39,12 @@ remote func register_player(player_id):
 	if player_id == 1:
 		get_tree().get_root().add_child(map)
 		map.get_node("Players").add_child(p)
+		p.connect("shoot", map, "_on_Tank_shoot")
 #		print(get_tree().get_root().get_children())
 	else:
 		map.get_node("Players").add_child(p)
-	print(get_tree().get_root().get_children())
+		p.connect("shoot", map, "_on_Tank_shoot")
+#	print(get_tree().get_root().get_children())
 	# if I'm the server I inform the new connected player about the others
 	if get_tree().get_network_unique_id() == 1:
 		if player_id != 1:

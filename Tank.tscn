@@ -62,6 +62,9 @@ _sections_unfolded = [ "Offset", "Region", "Transform" ]
 
 [node name="Muzzle" type="Position2D" parent="Turret" index="0"]
 
+position = Vector2( 55, 0 )
+_sections_unfolded = [ "Transform" ]
+
 [node name="Flash" type="Sprite" parent="Turret" index="1"]
 
 [node name="Camera2D" type="Camera2D" parent="." index="3"]
@@ -96,5 +99,7 @@ process_mode = 1
 wait_time = 1.0
 one_shot = false
 autostart = false
+
+[connection signal="timeout" from="GunTimer" to="." method="_on_GunTimer_timeout"]
 
 

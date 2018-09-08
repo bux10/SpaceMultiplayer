@@ -20,7 +20,7 @@ slave var slave_turret_rotation = 0
 
 var can_shoot = true
 var alive = true
-var health
+var health = max_health
 
 
 func _ready():
@@ -37,7 +37,6 @@ func _process(delta):
 		$Turret.rotation = slave_turret_rotation
 
 
-
 func control(delta):
 	$Turret.look_at(get_global_mouse_position())
 	var rot_dir = 0
@@ -52,15 +51,16 @@ func control(delta):
 	if Input.is_action_pressed('backward'):
 		velocity += Vector2(-max_speed, 0).rotated(rotation)
 		velocity /= 2.0
-	if Input.is_action_just_pressed('shoot'):
-		shoot(gun_shots, gun_spread)
+	if Input.is_action_pressed('shoot'):
+		rpc("master_shoot", gun_shots, gun_spread)
+#		shoot(gun_shots, gun_spread)
 	position.x = clamp(position.x, $Camera2D.limit_left, $Camera2D.limit_right)
 	position.y = clamp(position.y, $Camera2D.limit_top, $Camera2D.limit_bottom)
 	rset_unreliable("slave_position", position)
 	rset_unreliable("slave_rotation", rotation)
 	rset_unreliable("slave_turret_rotation", $Turret.rotation)
 	
-func shoot(num, spread, target=null):
+master func master_shoot(num, spread, target=null):
 	if can_shoot:
 		can_shoot = false
 		$GunTimer.start()
@@ -71,17 +71,27 @@ func shoot(num, spread, target=null):
 #				emit_signal('shoot', Bullet, $Turret/Muzzle.global_position, dir.rotated(a), target)
 #		else:
 		emit_signal('shoot', Bullet, $Turret/Muzzle.global_position, dir, target)
+		rpc("sync_shoot",  Bullet, $Turret/Muzzle.global_position, dir, target)
 #		$AnimationPlayer.play('muzzle_flash')
-#
-#
-#
-#func take_damage(amount):
-#	health -= amount
+
+sync func sync_shoot(_bullet, _pos, _dir, _target):
+	emit_signal('shoot', _bullet, _pos, _dir, _target)
+
+func explode():
+	queue_free()
+
+
+func take_damage(amount):
+	health -= amount
 #	emit_signal('health_changed', health * 100/max_health)
-#	if health <= 0:
-#		explode()
+	if health <= 0:
+		explode()
 #
 #func heal(amount):
 #	health += amount
 #	health = clamp(health, 0, max_health)
 #	emit_signal('health_changed', health * 100/max_health)
+
+func _on_GunTimer_timeout():
+	can_shoot = true
+	pass # replace with function body
