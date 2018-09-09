@@ -26,7 +26,7 @@ animations = [ {
 "speed": 12.0
 } ]
 
-[node name="Tank" type="KinematicBody2D"]
+[node name="Tank" type="KinematicBody2D" index="0"]
 
 input_pickable = false
 collision_layer = 2
