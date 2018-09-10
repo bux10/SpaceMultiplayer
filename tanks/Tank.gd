@@ -14,6 +14,7 @@ export (float) var gun_cooldown = 0.2
 export (int) var gun_shots = 1
 export (float) var gun_spread = 0
 
+
 slave var slave_position = Vector2()
 slave var slave_rotation = 0
 slave var slave_turret_rotation = 0
@@ -24,10 +25,10 @@ var alive = true
 onready var health = max_health
 
 
-
 func _ready():
 	if is_network_master():
 		$Camera2D.make_current()
+		$UnitDisplay/Label.text = str(get_tree().get_network_unique_id())
 	max_speed = max_speed
 	set_camera_limits()
 	$GunTimer.wait_time = gun_cooldown

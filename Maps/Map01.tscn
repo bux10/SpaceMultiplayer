@@ -30,11 +30,11 @@ _sections_unfolded = [ "Cell", "Collision" ]
 
 [node name="SpawnPoints" type="Node2D" parent="." index="1"]
 
-[node name="0" type="Position2D" parent="SpawnPoints" index="0"]
+[node name="host" type="Position2D" parent="SpawnPoints" index="0"]
 
 position = Vector2( 87.7424, 319.842 )
 
-[node name="1" type="Position2D" parent="SpawnPoints" index="1"]
+[node name="join" type="Position2D" parent="SpawnPoints" index="1"]
 
 position = Vector2( 905.062, 320.923 )
 

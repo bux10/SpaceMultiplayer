@@ -1,0 +1,103 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://tanks/Tank.gd" type="Script" id=1]
+[ext_resource path="res://weapons/Bullet.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/MGnew-ss.png" type="Texture" id=3]
+[ext_resource path="res://assets/onlyObjects_retina_rotated.png" type="Texture" id=4]
+[ext_resource path="res://effects/Explosion.tscn" type="PackedScene" id=5]
+[ext_resource path="res://ui/UnitDisplay.tscn" type="PackedScene" id=6]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 41.9291, 30.7557 )
+
+[node name="FT_Tank" type="KinematicBody2D" index="0"]
+
+input_pickable = false
+collision_layer = 2
+collision_mask = 7
+collision/safe_margin = 0.08
+script = ExtResource( 1 )
+_sections_unfolded = [ "Collision" ]
+Bullet = ExtResource( 2 )
+speed = 0
+rotation_speed = 2
+max_speed = 500
+max_health = 100
+velocity = Vector2( 0, 0 )
+gun_cooldown = 0.2
+gun_shots = 1
+gun_spread = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
+
+shape = SubResource( 1 )
+
+[node name="Body" type="Sprite" parent="." index="1"]
+
+texture = ExtResource( 3 )
+vframes = 2
+_sections_unfolded = [ "Animation" ]
+
+[node name="Turret" type="Sprite" parent="." index="2"]
+
+texture = ExtResource( 4 )
+offset = Vector2( 16, 0 )
+region_enabled = true
+region_rect = Rect2( 271, 60, 64, 28 )
+_sections_unfolded = [ "Offset", "Region", "Transform" ]
+
+[node name="Muzzle" type="Position2D" parent="Turret" index="0"]
+
+position = Vector2( 70, 0 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Flash" type="Sprite" parent="Turret" index="1"]
+
+[node name="Camera2D" type="Camera2D" parent="." index="3"]
+
+anchor_mode = 1
+rotating = false
+current = false
+zoom = Vector2( 1, 1 )
+limit_left = 0
+limit_top = 0
+limit_right = 1000000
+limit_bottom = 1000000
+limit_smoothed = false
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
+smoothing_enabled = false
+smoothing_speed = 5.0
+offset_v = 0.0
+offset_h = 0.0
+drag_margin_left = 0.2
+drag_margin_top = 0.2
+drag_margin_right = 0.2
+drag_margin_bottom = 0.2
+editor_draw_screen = true
+editor_draw_limits = false
+editor_draw_drag_margin = false
+_sections_unfolded = [ "Limit" ]
+
+[node name="GunTimer" type="Timer" parent="." index="4"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
+
+[node name="Explosion" parent="." index="5" instance=ExtResource( 5 )]
+
+visible = false
+
+[node name="UnitDisplay" parent="." index="6" instance=ExtResource( 6 )]
+
+scale = Vector2( 0.5, 0.5 )
+
+[connection signal="timeout" from="GunTimer" to="." method="_on_GunTimer_timeout"]
+
+[connection signal="animation_finished" from="Explosion" to="." method="_on_Explosion_animation_finished"]
+
+

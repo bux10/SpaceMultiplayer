@@ -26,7 +26,7 @@ onready var health = max_health
 func _ready():
 	if is_network_master():
 		$Camera2D.make_current()
-	max_speed = max_speed
+#	max_speed = max_speed
 	set_camera_limits()
 	$GunTimer.wait_time = gun_cooldown
 	pass
@@ -101,7 +101,10 @@ slave func sync_shoot(_bullet, _pos, _dir, _target):
 	emit_signal('shoot', _bullet, _pos, _dir, _target)
 
 sync func explode():
+	set_process(false)
+	velocity = Vector2()
 	$Body.hide()
+	$Turret.hide()
 	$Explosion.show()
 	$Explosion.play('fire')
 
