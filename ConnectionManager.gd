@@ -46,13 +46,16 @@ remote func register_player(player_id):
 #		hud.get_node("Margin/Container/HealthBar").value = p.max_health
 		p.connect("health_changed", hud, "update_healthbar")
 		p.connect("shoot", map, "_on_Tank_shoot")
+#		p.position = get_node('/root/Map/SpawnPoints/0').position
 #		print(get_tree().get_root().get_children())
 	else:
 		map.get_node("Players").add_child(p)
 		map.add_child(hud)
 		hud.set_network_master(player_id)
+#		if player_id != 1:
 		p.connect("health_changed", hud, "update_healthbar")
 		p.connect("shoot", map, "_on_Tank_shoot")
+#		p.position = get_node('/root/Map/SpawnPoints/0').position
 #	print(get_tree().get_root().get_children())
 	# if I'm the server I inform the new connected player about the others
 	if get_tree().get_network_unique_id() == 1:

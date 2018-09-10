@@ -5,9 +5,9 @@ signal health_changed
 signal dead
 
 export (PackedScene) var Bullet
-export (int) var speed = 200
-export (int) var rotation_speed = 5
-export (int) var max_speed = 150
+export (int) var speed
+export (int) var rotation_speed
+export (int) var max_speed
 export (int) var max_health
 export (Vector2) var velocity = Vector2()
 export (float) var gun_cooldown = 0.2
@@ -24,7 +24,12 @@ var alive = true
 onready var health = max_health
 
 
+
 func _ready():
+	if is_network_master():
+		$Camera2D.make_current()
+	max_speed = max_speed
+	set_camera_limits()
 	$GunTimer.wait_time = gun_cooldown
 	pass
 
@@ -32,11 +37,20 @@ func _process(delta):
 	if is_network_master():
 		control(delta)
 		move_and_slide(velocity)
+
 	else:
 		position = slave_position
 		rotation = slave_rotation
 		$Turret.rotation = slave_turret_rotation
 
+func set_camera_limits():
+	var ground = get_node('/root/Map/Ground')
+	var map_limits = ground.get_used_rect()
+	var map_cellsize = ground.cell_size
+	$Camera2D.limit_left = map_limits.position.x * map_cellsize.x
+	$Camera2D.limit_right = map_limits.end.x * map_cellsize.x
+	$Camera2D.limit_top = map_limits.position.y * map_cellsize.y
+	$Camera2D.limit_bottom = map_limits.end.y * map_cellsize.y
 
 func control(delta):
 	$Turret.look_at(get_global_mouse_position())
@@ -89,6 +103,7 @@ slave func sync_shoot(_bullet, _pos, _dir, _target):
 	emit_signal('shoot', _bullet, _pos, _dir, _target)
 
 sync func explode():
+	$Body.hide()
 	$Explosion.show()
 	$Explosion.play('fire')
 
