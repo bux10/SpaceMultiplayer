@@ -1,8 +1,10 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Bullet.gd" type="Script" id=1]
+[ext_resource path="res://weapons/Bullet.gd" type="Script" id=1]
 [ext_resource path="res://assets/onlyObjects_retina_rotated.png" type="Texture" id=2]
-[ext_resource path="res://Explosion.tscn" type="PackedScene" id=3]
+[ext_resource path="res://effects/Explosion.tscn" type="PackedScene" id=3]
+
+
 
 [sub_resource type="RectangleShape2D" id=1]
 

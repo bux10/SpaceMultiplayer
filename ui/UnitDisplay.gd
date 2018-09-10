@@ -7,6 +7,7 @@ var bar_yellow = preload("res://assets/UI/barHorizontal_yellow_mid 200.png")
 func _ready():
 	for node in get_children():
 		node.hide()
+		pass
 
 func _process(delta):
 	global_rotation = 0
