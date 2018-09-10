@@ -9,7 +9,7 @@
 custom_solver_bias = 0.0
 extents = Vector2( 10, 4.16508 )
 
-[node name="Bullet" type="Area2D"]
+[node name="Bullet" type="Area2D" index="0"]
 
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
@@ -52,6 +52,8 @@ autostart = false
 
 visible = false
 scale = Vector2( 0.3, 0.3 )
+animation = "smoke"
+frame = 0
 _sections_unfolded = [ "Transform" ]
 
 [connection signal="body_entered" from="." to="." method="_on_Bullet_body_entered"]

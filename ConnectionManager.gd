@@ -8,7 +8,7 @@ var map = load("res://Maps/Map01.tscn").instance()
 var hud = load("res://ui/HUD.tscn").instance()
 
 func _ready():
-	ship = preload("res://Tank.tscn")
+	ship = preload("res://MG_Tank.tscn")
 	get_tree().connect("connected_to_server", self, "_connected_ok")
 
 func on_host_game():
