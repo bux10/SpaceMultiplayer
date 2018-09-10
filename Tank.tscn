@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Tank.gd" type="Script" id=1]
 [ext_resource path="res://Bullet.tscn" type="PackedScene" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://assets/Mortar-BodyF2.png" type="Texture" id=4]
 [ext_resource path="res://assets/Mortar-BodyF3.png" type="Texture" id=5]
 [ext_resource path="res://assets/onlyObjects_retina_rotated.png" type="Texture" id=6]
+[ext_resource path="res://Explosion.tscn" type="PackedScene" id=7]
+[ext_resource path="res://UnitDisplay.tscn" type="PackedScene" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -18,11 +20,16 @@ animations = [ {
 "frames": [ ExtResource( 3 ) ],
 "loop": true,
 "name": "Idle",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ],
 "loop": true,
-"name": "Moving",
+"name": "Forward",
+"speed": 24.0
+}, {
+"frames": [ ExtResource( 5 ), ExtResource( 4 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "Backward",
 "speed": 12.0
 } ]
 
@@ -35,10 +42,10 @@ collision/safe_margin = 0.08
 script = ExtResource( 1 )
 _sections_unfolded = [ "Collision" ]
 Bullet = ExtResource( 2 )
-speed = 200
-rotation_speed = 5
+speed = 100
+rotation_speed = 1
 max_speed = 150
-max_health = 500
+max_health = 100
 velocity = Vector2( 0, 0 )
 gun_cooldown = 0.2
 gun_shots = 1
@@ -51,7 +58,7 @@ shape = SubResource( 1 )
 [node name="Body" type="AnimatedSprite" parent="." index="1"]
 
 frames = SubResource( 2 )
-animation = "Moving"
+animation = "Idle"
 
 [node name="Turret" type="Sprite" parent="." index="2"]
 
@@ -63,7 +70,7 @@ _sections_unfolded = [ "Offset", "Region", "Transform" ]
 
 [node name="Muzzle" type="Position2D" parent="Turret" index="0"]
 
-position = Vector2( 50, 0 )
+position = Vector2( 70, 0 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Flash" type="Sprite" parent="Turret" index="1"]
@@ -101,6 +108,16 @@ wait_time = 1.0
 one_shot = false
 autostart = false
 
+[node name="Explosion" parent="." index="5" instance=ExtResource( 7 )]
+
+visible = false
+
+[node name="UnitDisplay" parent="." index="6" instance=ExtResource( 8 )]
+
+scale = Vector2( 0.5, 0.5 )
+
 [connection signal="timeout" from="GunTimer" to="." method="_on_GunTimer_timeout"]
+
+[connection signal="animation_finished" from="Explosion" to="." method="_on_Explosion_animation_finished"]
 
 

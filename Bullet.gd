@@ -41,14 +41,22 @@ func explode():
 	set_process(false)
 	velocity = Vector2()
 	$Sprite.hide()
-	queue_free()
+#	queue_free()
+	$Explosion.show()
+	$Explosion.play("smoke")
+	
+#func explode():
+#	set_process(false)
+#	velocity = Vector2()
+#	$Sprite.hide()
 #	$Explosion.show()
 #	$Explosion.play("smoke")
 #
 func _on_Bullet_body_entered(body):
-	if body.is_network_master():
-		if body.has_method("take_damage"):
-			body.take_damage(damage)
+#	if body.is_network_master():
+	if body.has_method("take_damage"):
+		body.take_damage(damage)
+	explode()
 		
 #sync func sync_hit(body):
 #	if body.has_method("take_damage"):
@@ -61,3 +69,6 @@ func _on_Lifetime_timeout():
 #
 #func _on_Explosion_animation_finished():
 #	queue_free()
+
+func _on_Explosion_animation_finished():
+	queue_free()
