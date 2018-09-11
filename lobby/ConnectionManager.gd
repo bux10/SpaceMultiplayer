@@ -8,11 +8,23 @@ var map = load("res://Maps/Map01.tscn").instance()
 var hud = load("res://ui/HUD.tscn").instance()
 
 func _ready():
-	tank = preload("res://tanks/Player.tscn")
+	tank = preload("res://tanks/MachineGunner.tscn")
 	get_tree().connect("connected_to_server", self, "_connected_ok")
 
 func on_host_game():
 	var host = NetworkedMultiplayerENet.new()
+	var selected_tank = get_node('/root/Lobby/Panel/HostRect/TankSelect').selected
+	match selected_tank:
+		0:tank = load("res://tanks/MachineGunner.tscn")
+		1:tank = load("res://tanks/FlameThrower.tscn")
+		2:tank = load("res://tanks/Engineer.tscn")
+#	if selected_tank == 0:
+#		tank = load("res://tanks/MachineGunner.tscn")
+#	elif selected_tank == 1:
+#		tank = load("res://tanks/FlameThrower.tscn")
+#	else:
+#		tank = load("res://tanks/Engineer.tscn")
+
 	# 4 is the number of maximum clients
 	host.create_server(PORT, 4)
 	get_tree().set_network_peer(host)
@@ -20,6 +32,15 @@ func on_host_game():
  
 func on_join_game(ip):
 	var host = NetworkedMultiplayerENet.new()
+
+	var selected_tank = get_node('/root/Lobby/Panel/JoinRect/TankSelect').selected
+	if selected_tank == 0:
+		tank = load("res://tanks/MachineGunner.tscn")
+	elif selected_tank == 1:
+		tank = load("res://tanks/FlameThrower.tscn")
+	else:
+		tank = load("res://tanks/Engineer.tscn")
+	
 	host.create_client(ip, PORT)
 	get_tree().set_network_peer(host)
 

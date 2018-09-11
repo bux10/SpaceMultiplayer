@@ -1,0 +1,101 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://tanks/Base_Tank.tscn" type="PackedScene" id=1]
+[ext_resource path="res://tanks/scripts/Engineer.gd" type="Script" id=2]
+[ext_resource path="res://weapons/Bullet.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/engineer/engineer.png" type="Texture" id=4]
+[ext_resource path="res://assets/engineer/engineer-turret.png" type="Texture" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 41.0155, 29.1896 )
+
+[sub_resource type="Animation" id=2]
+
+resource_name = "forward"
+length = 0.3
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2 ]
+}
+
+[sub_resource type="Animation" id=3]
+
+resource_name = "idle"
+length = 1.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+
+[node name="Engineer" index="0" instance=ExtResource( 1 )]
+
+script = ExtResource( 2 )
+Bullet = ExtResource( 3 )
+rotation_speed = 5
+max_speed = 250
+max_health = 290
+gun_cooldown = 0.2
+gun_shots = 1
+gun_spread = 0
+
+[node name="CollisionShape2D" parent="." index="0"]
+
+shape = SubResource( 1 )
+
+[node name="Body" parent="." index="1"]
+
+texture = ExtResource( 4 )
+vframes = 3
+frame = 1
+
+[node name="anim" type="AnimationPlayer" parent="Body" index="0"]
+
+root_node = NodePath("..")
+autoplay = ""
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/forward = SubResource( 2 )
+anims/idle = SubResource( 3 )
+blend_times = [  ]
+
+[node name="Turret" parent="." index="2"]
+
+position = Vector2( -10, 0 )
+texture = ExtResource( 5 )
+offset = Vector2( 8, 0 )
+_sections_unfolded = [ "Offset", "Transform" ]
+
+[node name="Muzzle" parent="Turret" index="0"]
+
+position = Vector2( 82.0932, 0 )
+
+[node name="Explosion" parent="." index="4"]
+
+visible = false
+
+[connection signal="timeout" from="GunTimer" to="." method="_on_GunTimer_timeout"]
+
+
