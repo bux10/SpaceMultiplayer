@@ -18,12 +18,6 @@ func on_host_game():
 		0:tank = load("res://tanks/MachineGunner.tscn")
 		1:tank = load("res://tanks/FlameThrower.tscn")
 		2:tank = load("res://tanks/Engineer.tscn")
-#	if selected_tank == 0:
-#		tank = load("res://tanks/MachineGunner.tscn")
-#	elif selected_tank == 1:
-#		tank = load("res://tanks/FlameThrower.tscn")
-#	else:
-#		tank = load("res://tanks/Engineer.tscn")
 
 	# 4 is the number of maximum clients
 	host.create_server(PORT, 4)
@@ -32,14 +26,11 @@ func on_host_game():
  
 func on_join_game(ip):
 	var host = NetworkedMultiplayerENet.new()
-
 	var selected_tank = get_node('/root/Lobby/Panel/JoinRect/TankSelect').selected
-	if selected_tank == 0:
-		tank = load("res://tanks/MachineGunner.tscn")
-	elif selected_tank == 1:
-		tank = load("res://tanks/FlameThrower.tscn")
-	else:
-		tank = load("res://tanks/Engineer.tscn")
+	match selected_tank:
+		0:tank = load("res://tanks/MachineGunner.tscn")
+		1:tank = load("res://tanks/FlameThrower.tscn")
+		2:tank = load("res://tanks/Engineer.tscn")
 	
 	host.create_client(ip, PORT)
 	get_tree().set_network_peer(host)
