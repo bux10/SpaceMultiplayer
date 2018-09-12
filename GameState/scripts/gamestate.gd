@@ -20,10 +20,23 @@ signal game_ended()
 signal game_error(what)
 
 # Callback from SceneTree
-func _plaver_connected(id):
-# This is not used in this demo, because _connected_ok is called for clients
-# on success and will do the job.
+func _player_connected(id):
+	# This is not used in this demo, because _connected_ok is called for clients
+	# on success and will do the job.
 	pass
+
+# Callback from SceneTree
+func _player_disconnected(id):
+	if (get_tree().is_network_server()):
+		if (has_node("/root/world")): # Game is in progress
+			emit_signal("game_error", "Player " + players[id] + " disconnected")
+			end_game()
+		else: # Game is not in progress
+			# If we are the server, send to the new dude all the already registered players
+			unregister_player(id)
+			for p_id in players:
+				# Erase in the server
+				rpc_id(p_id, "unregister_player", id)
 
 # Callback from SceneTree, only for clients, not the server
 func _connected_ok():
@@ -55,7 +68,7 @@ remote func register_player(id, new_player_name):
 			rpc_id(p_id, "register_player", id, new_player_name) # Send new player to other remote players
 
 	players[id] = new_player_name
-	emit_signal("player_list_shanged")
+	emit_signal("player_list_changed")
 	pass
 
 remote func unregister_player(id):
@@ -70,7 +83,7 @@ remote func pre_start_game(spawn_points):
 
 	get_tree().get_root().get_node("Lobby").hide()
 
-	var player_scene = load("res://tanks/scripts/MachineGunner.gd") # TODO: This should be the selected tank
+	var player_scene = load("res://tanks/MachineGunner.tscn") # TODO: This should be the selected tank
 
 	for p_id in spawn_points:
 		var spawn_pos = map.get_node("spawn_points/" + str(spawn_points[p_id])).position
@@ -78,7 +91,7 @@ remote func pre_start_game(spawn_points):
 
 		player.set_name(str(p_id)) # Use unique ID as node name
 		player.position = spawn_pos
-		player.set_newtork_master(p_id) # Set unique ID as master
+		player.set_network_master(p_id) # Set unique ID as master
 
 		if (p_id == get_tree().get_network_unique_id()):
 			# If node for this peer, set name
@@ -87,7 +100,7 @@ remote func pre_start_game(spawn_points):
 			# Otherwise set name from peer
 			player.set_player_name(player[p_id])
 
-		map.get_node("players").add_child(player)
+		map.get_node("Players").add_child(player)
 
 	# Setup Score
 	map.get_node("Score").add_player(get_tree().get_network_unique_id(), player_name)
@@ -102,7 +115,7 @@ remote func pre_start_game(spawn_points):
 	pass
 
 remote func post_start_game():
-	get_tree().set_pause(flase) # Unpause and start game
+	get_tree().set_pause(false) # Unpause and start game
 
 var players_ready = []
 
@@ -135,7 +148,7 @@ func get_player_list():
 	pass
 
 func get_player_name():
-	return player.name
+	return player_name
 	pass
 
 func begin_game():

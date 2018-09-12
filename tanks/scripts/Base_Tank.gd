@@ -23,6 +23,9 @@ slave var slave_health
 var alive = true
 onready var health = max_health
 
+func set_player_name(new_name):
+	$PlayerName.set_text(new_name)
+
 func _ready():
 	if is_network_master():
 		$Camera2D.make_current()

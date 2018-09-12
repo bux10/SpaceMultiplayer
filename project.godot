@@ -11,12 +11,13 @@ config_version=3
 [application]
 
 config/name="Multiplayer"
-run/main_scene="res://lobby/Lobby.tscn"
+run/main_scene="res://GameState/Lobby.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-ConnectionManager="*res://lobby/ConnectionManager.gd"
+ConnectionManager="res://lobby/ConnectionManager.gd"
+gamestate="*res://GameState/scripts/gamestate.gd"
 
 [input]
 
