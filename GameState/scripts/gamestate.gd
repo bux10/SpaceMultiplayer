@@ -42,7 +42,7 @@ func _player_disconnected(id):
 func _connected_ok():
 	# Registration of a client begins here, tell everyone that we are here
 	rpc("register_player", get_tree().get_network_unique_id(), player_name)
-	emit_signal("connection_succeeded")
+	emit_signal("connection_suceeded")
 	pass
 
 # Callback from SceneTree, only for clients, not the server
@@ -98,7 +98,9 @@ remote func pre_start_game(spawn_points):
 			player.set_player_name(player_name)
 		else:
 			# Otherwise set name from peer
-			player.set_player_name(player[p_id])
+#			player.set_player_name(player[p_id])
+			player.set_player_name(player_name)
+			
 
 		map.get_node("Players").add_child(player)
 

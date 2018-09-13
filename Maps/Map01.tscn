@@ -39,6 +39,14 @@ position = Vector2( 87.7424, 319.842 )
 
 position = Vector2( 905.062, 320.923 )
 
+[node name="2" type="Position2D" parent="spawn_points" index="2"]
+
+position = Vector2( 494.225, 174.724 )
+
+[node name="3" type="Position2D" parent="spawn_points" index="3"]
+
+position = Vector2( 521.985, 457.869 )
+
 [node name="Players" type="Node2D" parent="." index="2"]
 
 [node name="Score" type="HBoxContainer" parent="." index="3"]
