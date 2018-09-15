@@ -1,5 +1,11 @@
 extends Node
 
+#TODO: added player object to hold player_name and tank_select
+# need to fix register_player to use player.tank_select to set
+# player_scene for each player
+
+
+
 # Default game port
 const DEFAULT_PORT = 10567
 
