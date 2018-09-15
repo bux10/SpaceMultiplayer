@@ -14,19 +14,19 @@ func _on_Host_pressed():
 	if ($Connect/Name.text == ""):
 		$Connect/ErrorLabel.text="Invalid name!"
 		return
-	print($Connect/TankSelect.selected)
+
 	$Connect.hide()
 	$Players.show()
 	$Connect/ErrorLabel.text = ""
 
 	var player_name = $Connect/Name.text
 	var tank_selected = $Connect/TankSelect.selected
-	
-#	var player = {}
-#	player.player_name = $Connect/Name.text
-#	player.tank_selected = $Connect/TankSelect.selected
-	
-	gamestate.host_game(player_name)
+
+	var player = {}
+	player.player_name = player_name
+	player.tank_selected = tank_selected
+
+	gamestate.host_game(player) # Was player_name
 	refresh_lobby()
 	pass # replace with function body
 
@@ -44,7 +44,13 @@ func _on_Join_pressed():
 	$Connect/Join.disabled = true
 
 	var player_name = $Connect/Name.text
-	gamestate.join_game(ip, player_name)
+	var tank_selected = $Connect/TankSelect.selected
+	
+	var player = {}
+	player.player_name = player_name
+	player.tank_selected = tank_selected
+	
+	gamestate.join_game(ip, player)
 	pass # replace with function body
 
 func _on_connection_success():
@@ -67,7 +73,7 @@ func _on_game_ended():
 	pass
 
 func _on_game_error(error_text):
-	print(error_text)
+#	print(error_text)
 	$Error.dialog_text = error_text
 	$Error.popup_centered_minsize()
 	pass
@@ -78,7 +84,7 @@ func refresh_lobby():
 	$Players/List.clear()
 	$Players/List.add_item(gamestate.get_player_name() + " (You)")
 	for p in players:
-		$Players/List.add_item(p)
+		$Players/List.add_item(p.player_name)
 
 	$Players/Start.disabled = not get_tree().is_network_server()
 	pass

@@ -8,6 +8,8 @@ const MAX_PLAYERS = 4
 
 # Name for Local Player
 var player_name = "Bux10"
+var tank_selected
+var player = {}
 
 # Names for remote players in id:name format
 var players = {}
@@ -41,7 +43,9 @@ func _player_disconnected(id):
 # Callback from SceneTree, only for clients, not the server
 func _connected_ok():
 	# Registration of a client begins here, tell everyone that we are here
-	rpc("register_player", get_tree().get_network_unique_id(), player_name)
+#	rpc("register_player", get_tree().get_network_unique_id(), player_name) #################
+	rpc("register_player", get_tree().get_network_unique_id(), player)
+	
 	emit_signal("connection_suceeded")
 #	pass
 
@@ -59,15 +63,17 @@ func _connected_fail():
 
 # Lobby Mangement Functions
 
-remote func register_player(id, new_player_name):
+#remote func register_player(id, new_player_name): ##########################
+remote func register_player(id, new_player):
+
 	if get_tree().is_network_server():
 		# If we are the server, let everyone know about the new player
-		rpc_id(id, "register_player", 1, player_name) # Send myself to new player
+		rpc_id(id, "register_player", 1, player) # Send myself to new player
 		for p_id in players: # Then for each remote player
 			rpc_id(id, "register_player", p_id, players[p_id]) # Send other remote players to new player
-			rpc_id(p_id, "register_player", id, new_player_name) # Send new player to other remote players
+			rpc_id(p_id, "register_player", id, new_player.player_name) # Send new player to other remote players
 
-	players[id] = new_player_name
+	players[id] = new_player
 	emit_signal("player_list_changed")
 	pass
 
@@ -82,8 +88,14 @@ remote func pre_start_game(spawn_points):
 	get_tree().get_root().add_child(map)
 
 	get_tree().get_root().get_node("Lobby").hide()
+	var player_scene
 
-	var player_scene = load("res://tanks/FlameThrower.tscn") # TODO: This should be the selected tank
+	match tank_selected:
+		0: player_scene = load("res://tanks/MachineGunner.tscn")
+		1: player_scene = load("res://tanks/FlameThrower.tscn")
+		2: player_scene = load("res://tanks/Engineer.tscn")
+
+#	var player_scene = load("res://tanks/FlameThrower.tscn") # TODO: This should be the selected tank
 
 	for p_id in spawn_points:
 		var spawn_pos = map.get_node("spawn_points/" + str(spawn_points[p_id])).position
@@ -99,17 +111,14 @@ remote func pre_start_game(spawn_points):
 			player.set_player_name(player_name)
 		else:
 			# Otherwise set name from peer
-			player.set_player_name(players[p_id])
-#			player.set_player_name(player_name)
-			
+			player.set_player_name(players[p_id].player_name)
 
-		print(player.name)
 		map.get_node("Players/"+player.name).connect("shoot", map, "_on_Tank_shoot")
 
 	# Setup Score
 	map.get_node("Score").add_player(get_tree().get_network_unique_id(), player_name)
 	for pn in players:
-		map.get_node("Score").add_player(pn, players[pn])
+		map.get_node("Score").add_player(pn, players[pn].player_name)
 
 	if not get_tree().is_network_server():
 		# Tell everyone we are ready to start
@@ -135,14 +144,26 @@ remote func ready_to_start(id):
 		post_start_game()
 	pass
 
-func host_game(new_player_name):
-	player_name = new_player_name
+#func host_game(new_player_name):
+#	player_name = new_player_name
+#	var host = NetworkedMultiplayerENet.new()
+#	host.create_server(DEFAULT_PORT, MAX_PLAYERS)
+#	get_tree().set_network_peer(host)
+
+func host_game(new_player):
+	player = new_player
+	player_name = player.player_name
+	tank_selected = player.tank_selected
 	var host = NetworkedMultiplayerENet.new()
 	host.create_server(DEFAULT_PORT, MAX_PLAYERS)
 	get_tree().set_network_peer(host)
 
-func join_game(ip, new_player_name):
-	player_name = new_player_name
+
+
+func join_game(ip, new_player):
+	player = new_player
+	player_name = player.player_name
+	tank_selected = player.tank_selected
 	var host = NetworkedMultiplayerENet.new()
 	host.create_client(ip, DEFAULT_PORT)
 	get_tree().set_network_peer(host)
