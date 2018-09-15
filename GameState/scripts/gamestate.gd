@@ -43,7 +43,7 @@ func _connected_ok():
 	# Registration of a client begins here, tell everyone that we are here
 	rpc("register_player", get_tree().get_network_unique_id(), player_name)
 	emit_signal("connection_suceeded")
-	pass
+#	pass
 
 # Callback from SceneTree, only for clients, not the server
 func _server_disconnected():
@@ -83,7 +83,7 @@ remote func pre_start_game(spawn_points):
 
 	get_tree().get_root().get_node("Lobby").hide()
 
-	var player_scene = load("res://tanks/MachineGunner.tscn") # TODO: This should be the selected tank
+	var player_scene = load("res://tanks/FlameThrower.tscn") # TODO: This should be the selected tank
 
 	for p_id in spawn_points:
 		var spawn_pos = map.get_node("spawn_points/" + str(spawn_points[p_id])).position
@@ -93,16 +93,18 @@ remote func pre_start_game(spawn_points):
 		player.position = spawn_pos
 		player.set_network_master(p_id) # Set unique ID as master
 
+		map.get_node("Players").add_child(player)
 		if (p_id == get_tree().get_network_unique_id()):
 			# If node for this peer, set name
 			player.set_player_name(player_name)
 		else:
 			# Otherwise set name from peer
-#			player.set_player_name(player[p_id])
-			player.set_player_name(player_name)
+			player.set_player_name(players[p_id])
+#			player.set_player_name(player_name)
 			
 
-		map.get_node("Players").add_child(player)
+		print(player.name)
+		map.get_node("Players/"+player.name).connect("shoot", map, "_on_Tank_shoot")
 
 	# Setup Score
 	map.get_node("Score").add_player(get_tree().get_network_unique_id(), player_name)

@@ -86,7 +86,7 @@ func set_camera_limits():
 	pass
 	
 sync func explode():
-	$Body.hide()
+#	$Body.hide()
 	$Explosion.show()
 	$Explosion.play('fire')
 
@@ -108,5 +108,8 @@ slave func update_enemy_ui(value):
 	pass
 
 func _on_Explosion_animation_finished():
-	queue_free()
+	$Explosion.hide()
+	$Explosion.stop()
+	health = max_health
+#	queue_free()
 	pass # replace with function body

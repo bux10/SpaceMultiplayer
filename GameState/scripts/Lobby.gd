@@ -14,11 +14,18 @@ func _on_Host_pressed():
 	if ($Connect/Name.text == ""):
 		$Connect/ErrorLabel.text="Invalid name!"
 		return
+	print($Connect/TankSelect.selected)
 	$Connect.hide()
 	$Players.show()
 	$Connect/ErrorLabel.text = ""
 
 	var player_name = $Connect/Name.text
+	var tank_selected = $Connect/TankSelect.selected
+	
+#	var player = {}
+#	player.player_name = $Connect/Name.text
+#	player.tank_selected = $Connect/TankSelect.selected
+	
 	gamestate.host_game(player_name)
 	refresh_lobby()
 	pass # replace with function body
@@ -60,6 +67,7 @@ func _on_game_ended():
 	pass
 
 func _on_game_error(error_text):
+	print(error_text)
 	$Error.dialog_text = error_text
 	$Error.popup_centered_minsize()
 	pass
