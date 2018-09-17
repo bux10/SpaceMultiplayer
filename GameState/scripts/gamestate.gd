@@ -51,7 +51,7 @@ func _connected_ok():
 	# Registration of a client begins here, tell everyone that we are here
 #	rpc("register_player", get_tree().get_network_unique_id(), player_name) #################
 	rpc("register_player", get_tree().get_network_unique_id(), player)
-	
+
 	emit_signal("connection_suceeded")
 #	pass
 
@@ -96,15 +96,18 @@ remote func pre_start_game(spawn_points):
 	get_tree().get_root().get_node("Lobby").hide()
 	var player_scene
 
-	match tank_selected:
-		0: player_scene = load("res://tanks/MachineGunner.tscn")
-		1: player_scene = load("res://tanks/FlameThrower.tscn")
-		2: player_scene = load("res://tanks/Engineer.tscn")
 
-#	var player_scene = load("res://tanks/FlameThrower.tscn") # TODO: This should be the selected tank
 
 	for p_id in spawn_points:
 		var spawn_pos = map.get_node("spawn_points/" + str(spawn_points[p_id])).position
+		
+
+		match tank_selected:
+			0: player_scene = load("res://tanks/MachineGunner.tscn")
+			1: player_scene = load("res://tanks/FlameThrower.tscn")
+			2: player_scene = load("res://tanks/Engineer.tscn")
+
+			
 		var player = player_scene.instance()
 
 		player.set_name(str(p_id)) # Use unique ID as node name
