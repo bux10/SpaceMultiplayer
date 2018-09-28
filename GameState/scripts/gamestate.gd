@@ -100,14 +100,19 @@ remote func pre_start_game(spawn_points):
 
 	for p_id in spawn_points:
 		var spawn_pos = map.get_node("spawn_points/" + str(spawn_points[p_id])).position
-		
 
-		match tank_selected:
-			0: player_scene = load("res://tanks/MachineGunner.tscn")
-			1: player_scene = load("res://tanks/FlameThrower.tscn")
-			2: player_scene = load("res://tanks/Engineer.tscn")
+		if(p_id != 1):
+			match players[players.keys()[0]].tank_selected:
+			#match players[p_id].tank_selected:
+				0: player_scene = load("res://tanks/MachineGunner.tscn")
+				1: player_scene = load("res://tanks/FlameThrower.tscn")
+				2: player_scene = load("res://tanks/Engineer.tscn")
+		else:
+			match tank_selected:
+				0: player_scene = load("res://tanks/MachineGunner.tscn")
+				1: player_scene = load("res://tanks/FlameThrower.tscn")
+				2: player_scene = load("res://tanks/Engineer.tscn")
 
-			
 		var player = player_scene.instance()
 
 		player.set_name(str(p_id)) # Use unique ID as node name
